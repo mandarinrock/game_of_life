@@ -14,9 +14,9 @@ void printBoard(vector<vector<bool>> board) {
     for(int i = 0; i < board.size(); i++) {
         for(int j = 0; j < board[0].size(); j++) {
             if(board[i][j]) {
-                cout << "*";
+                cout << " * ";
             } else {
-                cout << " ";
+                cout << "   ";
             }
         }
         cout << endl;
@@ -180,12 +180,28 @@ bool updateCell(vector<vector<bool>> board, int x, int y) {
     }
 }
 
+vector<vector<bool>> updateBoard(vector<vector<bool>> board) {
+    vector<vector<bool>> newBoard(board.size(), vector<bool>(board[0].size()));
+    for(int i = 0; i < board.size(); i++) {
+        for(int j = 0; j < board[0].size(); j++) {
+            newBoard[i][j] = updateCell(board, i, j);
+        }
+    }
+    return newBoard;
+}
+
 
 int main() {
-    vector<vector<bool>> board(5, vector<bool>(50, false));
+    vector<vector<bool>> board(10, vector<bool>(10, false));
     printBoard(board);
     board = randomBoard(board);
     printBoard(board);
+
+    for(int i = 0; i < 10; i++) {
+        board = updateBoard(board);
+        printBoard(board);
+        cout << "Frame #" << i << endl;
+    }
 
     cout << "Successful run, terminating" << endl;
     return 0;
