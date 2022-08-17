@@ -24,7 +24,8 @@ void printBoard(vector<vector<bool>> board) {
 
 }
 
-vector<vector<bool>> randomBoard(vector<vector<bool>> board) {
+vector<vector<bool>> randomBoard() {
+    vector<vector<bool>> board(10, vector<bool>(10, false));
     srand(time(NULL));
     for(int i = 0; i < board.size(); i++) {
         for(int j = 0; j < board[0].size(); j++) {
