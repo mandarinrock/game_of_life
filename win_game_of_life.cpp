@@ -2,6 +2,7 @@
 #include <vector>
 #include <time.h>
 #include <windows.h>
+#include <stdlib.h>
 using namespace std;
 
 int getTerminalWidth() {
@@ -16,17 +17,34 @@ int getTerminalHeight() {
     return csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
 }
 
+void resetCursor() {
+    for(int i = 0; i < getTerminalHeight()-1; i++) {
+        cout << "\x1b[A";
+    }
+}
+
+
 void printBoard(vector<vector<bool>> board) {
+    // gotoxy(getTerminalHeight(), getTerminalWidth());
+
+    // for(int i = 0; i < board[0].size()-10; i++) {
+    //     cout << " - ";
+    // }
+    // cout << endl;
+    // GoToXY(0,0);
+    // system("CLS");
 
     for(int i = 0; i < board.size(); i++) {
+        // cout << i << ") ";
         for(int j = 0; j < board[0].size(); j++) {
+            // Sleep(1);
             if(board[i][j]) {
                 cout << " * ";
             } else {
                 cout << "   ";
             }
         }
-        cout << endl;
+        if(i < board.size()-1) cout << endl;
     }
 
 }
@@ -47,7 +65,9 @@ void printBoard(vector<vector<bool>> board) {
 // }
 
 vector<vector<bool>> randomBoard() {
-    vector<vector<bool>> board(getTerminalHeight()-5, vector<bool>(getTerminalWidth()-5, false));
+    // int height = ;
+    // int width = ;
+    vector<vector<bool>> board(getTerminalHeight()-1, vector<bool>(getTerminalWidth()/3, false));
     srand(time(NULL));
     for(int i = 0; i < board.size(); i++) {
         for(int j = 0; j < board[0].size(); j++) {
@@ -57,16 +77,16 @@ vector<vector<bool>> randomBoard() {
     return board;
 }
 
-vector<vector<bool>> randomBoard(int height, int width) {
-    vector<vector<bool>> board(height, vector<bool>(width, false));
-    srand(time(NULL));
-    for(int i = 0; i < board.size(); i++) {
-        for(int j = 0; j < board[0].size(); j++) {
-            board[i][j] = rand() % 2;
-        }
-    }
-    return board;
-}
+// vector<vector<bool>> randomBoard(int height, int width) {
+//     vector<vector<bool>> board(height, vector<bool>(width, false));
+//     srand(time(NULL));
+//     for(int i = 0; i < board.size(); i++) {
+//         for(int j = 0; j < board[0].size(); j++) {
+//             board[i][j] = rand() % 2;
+//         }
+//     }
+//     return board;
+// }
 
 bool updateCell(vector<vector<bool>> board, int x, int y) {
     int neighbors = 0;
@@ -233,15 +253,23 @@ vector<vector<bool>> updateBoard(vector<vector<bool>> board) {
 //     }
 // }
 
+
+
+
 void runGame(vector<vector<bool>> board, int runtime) {
+    system("CLS");
+    printBoard(board);
     for(int i = 0; i < runtime; i++) {
-        cout << "Frame #" << i << endl;
-        printBoard(board);
+        Sleep(35);
+        cout << endl;
+        resetCursor();
+        // cout << "Frame #" << i;
         board = updateBoard(board);
+
+        // cout << "Hello World" << endl;
+        printBoard(board);
     }
 }
-
-
 
 
 int main() {
@@ -272,7 +300,8 @@ int main() {
     // cout << "Width: " << board[0].size() << endl;
     // cout << "Height: " << board.size() << endl;
 
-    runGame(randomBoard(getTerminalHeight()-5,getTerminalWidth()-5), 100);
-    cout << "Successful run, terminating" << endl;
+    // runGame(randomBoard(getTerminalHeight()-5,getTerminalWidth()-5), 10);
+    runGame(randomBoard(), 500);
+    // cout << "Successful run, terminating" << endl;
     return 0;
 }
